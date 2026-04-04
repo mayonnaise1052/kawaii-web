@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kawaii Chord Maker</title>
-  <meta name="description" content="歌詞とコードを一緒に管理。かわいいコードシートをかんたんに作れるアプリ。" />
+  <meta name="description" content="Create beautiful chord sheets easily. A cute chord chart maker app for musicians." />
   <link rel="icon" href="images/icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
@@ -25,6 +25,38 @@
       background: var(--light);
       color: var(--purple);
       overflow-x: hidden;
+    }
+
+    /* ── LANG TOGGLE ── */
+    .lang-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      display: flex;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(8px);
+      border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,.3);
+      overflow: hidden;
+    }
+
+    .lang-toggle button {
+      padding: 7px 16px;
+      font-family: inherit;
+      font-size: .85rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,.6);
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .lang-toggle button.active {
+      background: var(--pink);
+      color: var(--purple);
+      border-radius: 999px;
     }
 
     /* ── HERO ── */
@@ -87,17 +119,13 @@
     }
     .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
 
-    .btn-primary {
-      background: var(--pink);
-      color: var(--purple);
-    }
+    .btn-primary  { background: var(--pink); color: var(--purple); }
     .btn-secondary {
       background: transparent;
       border: 2px solid rgba(255,255,255,.5);
       color: white;
     }
 
-    /* floating notes decoration */
     .notes {
       position: absolute;
       font-size: 2rem;
@@ -168,23 +196,9 @@
       box-shadow: 0 12px 32px rgba(61,31,78,.14);
     }
 
-    .feature-icon {
-      font-size: 2.6rem;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .feature-card h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      font-size: .93rem;
-      line-height: 1.65;
-      opacity: .72;
-    }
+    .feature-icon { font-size: 2.6rem; margin-bottom: 16px; display: block; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+    .feature-card p  { font-size: .93rem; line-height: 1.65; opacity: .72; }
 
     .feature-card:nth-child(1) { border-top: 4px solid var(--pink); }
     .feature-card:nth-child(2) { border-top: 4px solid var(--mint); }
@@ -202,19 +216,13 @@
 
     .steps {
       display: flex;
-      gap: 0;
       justify-content: center;
       flex-wrap: wrap;
       max-width: 860px;
       margin: 0 auto;
     }
 
-    .step {
-      flex: 1;
-      min-width: 200px;
-      padding: 24px 20px;
-      position: relative;
-    }
+    .step { flex: 1; min-width: 200px; padding: 24px 20px; }
 
     .step-num {
       width: 52px;
@@ -229,8 +237,7 @@
       justify-content: center;
       margin: 0 auto 16px;
     }
-
-    .step:nth-child(2) .step-num { background: var(--mint); color: var(--purple); }
+    .step:nth-child(2) .step-num { background: var(--mint);   color: var(--purple); }
     .step:nth-child(3) .step-num { background: var(--yellow); color: var(--purple); }
 
     .step h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
@@ -243,18 +250,8 @@
       text-align: center;
       padding: 80px 24px;
     }
-
-    .cta h2 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 900;
-      margin-bottom: 16px;
-    }
-
-    .cta p {
-      opacity: .8;
-      margin-bottom: 36px;
-      font-size: 1.05rem;
-    }
+    .cta h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; margin-bottom: 16px; }
+    .cta p  { opacity: .8; margin-bottom: 36px; font-size: 1.05rem; }
 
     /* ── FOOTER ── */
     footer {
@@ -265,9 +262,6 @@
       font-size: .85rem;
     }
 
-    footer a { color: var(--pink); text-decoration: none; }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .hero { padding: 60px 20px 80px; }
       .hero img.logo { width: 130px; }
@@ -275,6 +269,12 @@
   </style>
 </head>
 <body>
+
+  <!-- LANG TOGGLE -->
+  <div class="lang-toggle">
+    <button id="btn-ja" onclick="setLang('ja')">JP</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
 
   <!-- HERO -->
   <section class="hero">
@@ -291,92 +291,89 @@
         <span class="yellow">CHORD</span> <span class="pink">MAKER</span>
       </h1>
 
-      <p>
-        歌詞にコードを乗せて、<br />
-        きれいなコード譜をかんたんに作れるアプリです。
-      </p>
+      <p data-i18n="hero.sub"></p>
 
       <div class="btn-group">
-        <a href="#download" class="btn btn-primary">ダウンロード（無料）</a>
-        <a href="#features" class="btn btn-secondary">機能を見る</a>
+        <a href="#download" class="btn btn-primary" data-i18n="hero.download"></a>
+        <a href="#features" class="btn btn-secondary" data-i18n="hero.features"></a>
       </div>
     </div>
   </section>
 
   <!-- SCREENSHOT -->
   <section class="screenshot-section">
-    <img src="images/screenshot.png" alt="Kawaii Chord Maker スクリーンショット" />
+    <img src="images/screenshot.png" alt="Kawaii Chord Maker screenshot" />
   </section>
 
   <!-- FEATURES -->
   <section class="features" id="features">
-    <h2 class="section-title">できること <span class="accent">♡</span></h2>
-    <p class="section-sub">ミュージシャンのための、かわいくて使いやすいコード譜作成ツール</p>
+    <h2 class="section-title" data-i18n="features.title"></h2>
+    <p class="section-sub" data-i18n="features.sub"></p>
 
     <div class="feature-grid">
       <div class="feature-card">
         <span class="feature-icon">🎵</span>
-        <h3>歌詞＋コードを同時管理</h3>
-        <p>歌詞の各フレーズにコードタグを付けてまとめて管理。編集もかんたんです。</p>
+        <h3 data-i18n="features.f1.title"></h3>
+        <p  data-i18n="features.f1.body"></p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">📄</span>
-        <h3>きれいなシートをリアルタイムプレビュー</h3>
-        <p>入力しながらコードシートの仕上がりを右パネルで確認できます。</p>
+        <h3 data-i18n="features.f2.title"></h3>
+        <p  data-i18n="features.f2.body"></p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🎹</span>
-        <h3>コードビルダー内蔵</h3>
-        <p>ルート音＋コードタイプを選ぶだけで、あらゆるコードをすばやく追加できます。</p>
+        <h3 data-i18n="features.f3.title"></h3>
+        <p  data-i18n="features.f3.body"></p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🔀</span>
-        <h3>トランスポーズ＆ランダマイズ</h3>
-        <p>ワンクリックで移調。コード進行のインスピレーションにはランダマイズ機能を。</p>
+        <h3 data-i18n="features.f4.title"></h3>
+        <p  data-i18n="features.f4.body"></p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🎨</span>
-        <h3>マイパレット</h3>
-        <p>よく使うコードをパレットに保存しておけば、次回からもっとスムーズに。</p>
+        <h3 data-i18n="features.f5.title"></h3>
+        <p  data-i18n="features.f5.body"></p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">⚙️</span>
-        <h3>レイアウト自由自在</h3>
-        <p>フォントサイズ・余白・行間・2カラム表示など、印刷に合わせて細かく調整できます。</p>
+        <h3 data-i18n="features.f6.title"></h3>
+        <p  data-i18n="features.f6.body"></p>
       </div>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
   <section class="how">
-    <h2 class="section-title" style="margin-bottom:12px">使い方 <span class="accent">3ステップ</span></h2>
-    <p class="section-sub">はじめてでもすぐに使えます</p>
+    <h2 class="section-title" style="margin-bottom:12px" data-i18n="how.title"></h2>
+    <p class="section-sub" data-i18n="how.sub"></p>
 
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>歌詞を入力</h3>
-        <p>1行ずつ歌詞のフレーズを入力して追加します。</p>
+        <h3 data-i18n="how.s1.title"></h3>
+        <p  data-i18n="how.s1.body"></p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>コードを付ける</h3>
-        <p>コードビルダーでコードを選んで、歌詞の上に配置します。</p>
+        <h3 data-i18n="how.s2.title"></h3>
+        <p  data-i18n="how.s2.body"></p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>保存 &#38; 印刷</h3>
-        <p>ファイルに保存したり、きれいなコードシートとして出力できます。</p>
+        <h3 data-i18n="how.s3.title"></h3>
+        <p  data-i18n="how.s3.body"></p>
       </div>
     </div>
   </section>
 
   <!-- CTA / DOWNLOAD -->
   <section class="cta" id="download">
-    <h2>さっそく使ってみよう &#9835;</h2>
-    <p>無料でダウンロードできます。Windows対応。</p>
+    <h2 data-i18n="cta.title"></h2>
+    <p  data-i18n="cta.sub"></p>
     <div class="btn-group">
-      <a href="#" class="btn btn-primary">Windows版をダウンロード</a>
+      <a href="#" class="btn btn-primary" data-i18n="cta.download"></a>
     </div>
   </section>
 
@@ -384,6 +381,98 @@
   <footer>
     <p>&copy; 2026 Kawaii Chord Maker &nbsp;|&nbsp; Made with &#10084;</p>
   </footer>
+
+  <script>
+    const i18n = {
+      ja: {
+        "hero.sub":      "歌詞にコードを乗せて、<br>きれいなコード譜をかんたんに作れるアプリです。",
+        "hero.download": "ダウンロード（無料）",
+        "hero.features": "機能を見る",
+
+        "features.title": "できること <span class='accent'>♡</span>",
+        "features.sub":   "ミュージシャンのための、かわいくて使いやすいコード譜作成ツール",
+        "features.f1.title": "歌詞＋コードを同時管理",
+        "features.f1.body":  "歌詞の各フレーズにコードタグを付けてまとめて管理。編集もかんたんです。",
+        "features.f2.title": "リアルタイムプレビュー",
+        "features.f2.body":  "入力しながらコード譜の仕上がりを右パネルで確認できます。",
+        "features.f3.title": "コードビルダー内蔵",
+        "features.f3.body":  "ルート音＋コードタイプを選ぶだけで、あらゆるコードをすばやく追加できます。",
+        "features.f4.title": "トランスポーズ＆ランダマイズ",
+        "features.f4.body":  "ワンクリックで移調。コード進行のインスピレーションにはランダマイズ機能を。",
+        "features.f5.title": "マイパレット",
+        "features.f5.body":  "よく使うコードをパレットに保存しておけば、次回からもっとスムーズに。",
+        "features.f6.title": "レイアウト自由自在",
+        "features.f6.body":  "フォントサイズ・余白・行間・2カラム表示など、印刷に合わせて細かく調整できます。",
+
+        "how.title": "使い方 <span class='accent'>3ステップ</span>",
+        "how.sub":   "はじめてでもすぐに使えます",
+        "how.s1.title": "歌詞を入力",
+        "how.s1.body":  "1行ずつ歌詞のフレーズを入力して追加します。",
+        "how.s2.title": "コードを付ける",
+        "how.s2.body":  "コードビルダーでコードを選んで、歌詞の上に配置します。",
+        "how.s3.title": "保存 & 印刷",
+        "how.s3.body":  "ファイルに保存したり、きれいなコード譜として出力できます。",
+
+        "cta.title":    "さっそく使ってみよう &#9835;",
+        "cta.sub":      "無料でダウンロードできます。Windows対応。",
+        "cta.download": "Windows版をダウンロード",
+      },
+      en: {
+        "hero.sub":      "Add chords to your lyrics and create beautiful chord charts — easily.",
+        "hero.download": "Download (Free)",
+        "hero.features": "See Features",
+
+        "features.title": "What You Can Do <span class='accent'>♡</span>",
+        "features.sub":   "A cute and easy-to-use chord chart maker for musicians",
+        "features.f1.title": "Manage Lyrics & Chords Together",
+        "features.f1.body":  "Attach chord tags to each lyric phrase and manage them all in one place.",
+        "features.f2.title": "Real-Time Preview",
+        "features.f2.body":  "See your chord chart take shape instantly in the preview panel as you type.",
+        "features.f3.title": "Built-in Chord Builder",
+        "features.f3.body":  "Pick a root note and chord type to quickly add any chord you need.",
+        "features.f4.title": "Transpose & Randomize",
+        "features.f4.body":  "Transpose with one click. Use Randomize to spark new chord progression ideas.",
+        "features.f5.title": "My Palette",
+        "features.f5.body":  "Save your favourite chords to your palette for faster access next time.",
+        "features.f6.title": "Flexible Layout",
+        "features.f6.body":  "Fine-tune font size, margins, line gap, and 2-column view for the perfect printout.",
+
+        "how.title": "How It Works — <span class='accent'>3 Steps</span>",
+        "how.sub":   "Anyone can get started right away",
+        "how.s1.title": "Enter Your Lyrics",
+        "how.s1.body":  "Type each lyric phrase line by line and add them to the editor.",
+        "how.s2.title": "Add Chords",
+        "how.s2.body":  "Choose chords from the chord builder and place them above the lyrics.",
+        "how.s3.title": "Save & Print",
+        "how.s3.body":  "Save your file or export a clean chord chart ready to print.",
+
+        "cta.title":    "Start Making Chord Charts &#9835;",
+        "cta.sub":      "Free to download. Available on Windows.",
+        "cta.download": "Download for Windows",
+      }
+    };
+
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      localStorage.setItem('kcm-lang', lang);
+
+      document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang][key] !== undefined) {
+          el.innerHTML = i18n[lang][key];
+        }
+      });
+    }
+
+    // Auto-detect on load
+    const saved = localStorage.getItem('kcm-lang');
+    const browser = navigator.language || navigator.userLanguage || '';
+    const lang = saved || (browser.startsWith('ja') ? 'ja' : 'en');
+    setLang(lang);
+  </script>
 
 </body>
 </html>
