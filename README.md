@@ -27,4 +27,4 @@
 
 ## デプロイ
 
-AWS Amplify で `main` ブランチと連携しており、`git push` すると自動でデプロイされます。
+Github Pagesがmain branchを公開しており、`git push` すると自動でデプロイされます。
